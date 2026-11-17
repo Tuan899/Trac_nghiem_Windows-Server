@@ -1,0 +1,650 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Đề ôn tập 100 câu Windows Server – Lê Đình Tuấn</title><style>
+:root {
+  --bg:#f6f8fc; --card:#fff; --ink:#14243b; --muted:#5e6d7f;
+  --brand:#3b5bf0; --brand-soft:#edf1ff; --edge:#dfe5ee;
+  --good:#087f53; --bad:#b52e47; --goodbg:#eafaf0; --badbg:#fff0f2;
+  --gutter:12px;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body {
+  margin:0; min-width:280px; min-height:100vh; min-height:100svh;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  font:16px/1.55 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  background:var(--bg); color:var(--ink);
+}
+button,input { font:inherit; }
+button { touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+button,input,fieldset { min-width:0; }
+button:focus-visible,input:focus-visible {
+  outline:3px solid #f3b945; outline-offset:3px;
+}
+.shell {
+  width:calc(100% - var(--gutter) - var(--gutter)); max-width:1280px;
+  margin-inline:auto;
+}
+.top { background:#142e68; color:#fff; padding:24px 0; }
+.top h1 { margin:0 0 8px; font-size:clamp(23px,3.2vw,36px); line-height:1.3; letter-spacing:-.5px; overflow-wrap:anywhere; }
+.top p { margin:0; color:#d3e0ff; font-size:14px; }
+.top .eyebrow { margin:0 0 10px; font-size:11px; font-weight:750; letter-spacing:1.2px; color:#aabdff; }
+.identity { display:flex; flex-wrap:wrap; gap:6px 22px; margin-top:14px; font-size:13px; color:#d3e0ff; }
+.identity b { color:#fff; }
+.identity>span { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.stats { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.chip { max-width:100%; padding:6px 10px; border-radius:100px; background:#ffffff23; font-size:12px; overflow-wrap:anywhere; }
+.layout { display:grid; grid-template-columns:minmax(0,1fr); align-items:start; gap:16px; margin-block:20px 40px; }
+.mainpanel,.sidepanel {
+  min-width:0; background:var(--card); border:1px solid var(--edge);
+  border-radius:14px; box-shadow:0 6px 24px #142e680d;
+}
+.mainpanel { padding:18px 16px; }
+.sidepanel { padding:18px 16px; }
+.sidepanel h3 { margin:0 0 10px; font-size:16px; }
+.setup { max-width:820px; margin-block:20px 40px; }
+.setup .mainpanel { padding:24px 18px; }
+.step-label { color:var(--brand); font-size:12px; font-weight:800; letter-spacing:1px; }
+h2 { margin:16px 0 22px; font-size:clamp(20px,2.2vw,28px); line-height:1.45; }
+.setup h2 { margin:10px 0 8px; }
+.setup-intro { margin:0 0 24px; color:var(--muted); }
+.form-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:16px; }
+.field { display:grid; align-content:start; gap:8px; min-width:0; }
+.field label { font-size:14px; font-weight:700; }
+.field input {
+  width:100%; min-height:48px; padding:12px 13px; font-size:16px;
+  color:var(--ink); background:#fff; border:1px solid #b9c4d6; border-radius:10px;
+}
+.field input[aria-invalid='true'] { border-color:var(--bad); }
+.form-section { border:0; padding:0; margin:26px 0 0; min-width:0; }
+.form-section legend { padding:0; margin-bottom:12px; font-size:15px; font-weight:750; }
+.count-row { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; align-items:center; }
+.presets { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; min-width:0; }
+.btn.preset { padding:10px 4px; font-size:13px; }
+.preset.active { color:var(--brand); border-color:var(--brand); background:var(--brand-soft); }
+.help { margin:8px 0 0; font-size:13px; color:var(--muted); }
+.toggle-row {
+  display:flex; align-items:center; gap:12px; padding:14px 12px; margin-top:10px;
+  border:1px solid var(--edge); border-radius:11px; cursor:pointer;
+}
+.toggle-row input { width:22px; height:22px; flex:0 0 22px; margin:0; accent-color:var(--brand); cursor:pointer; }
+.toggle-row>span { min-width:0; }
+.toggle-row strong { display:block; font-size:14px; }
+.toggle-row small { display:block; margin-top:3px; color:var(--muted); font-size:13px; }
+.setup-summary { margin:22px 0 14px; padding:12px 14px; background:var(--brand-soft); border-radius:10px; color:#304b9d; font-size:14px; }
+.form-error { margin:16px 0 0; color:var(--bad); font-size:14px; }
+.privacy-note { margin:14px 0 0; text-align:center; font-size:12px; color:var(--muted); }
+.question-meta { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px 16px; color:var(--muted); font-size:13px; }
+.section-label { font-weight:750; color:var(--brand); }
+#question { white-space:pre-wrap; overflow-wrap:anywhere; scroll-margin-top:20px; }
+#question:focus { outline:none; }
+.options { display:grid; gap:12px; }
+.option {
+  display:flex; align-items:flex-start; gap:12px; width:100%; min-height:64px;
+  padding:14px 12px; text-align:left; border:1.5px solid var(--edge);
+  border-radius:11px; background:#fff; color:var(--ink); font-size:15px;
+  line-height:1.55; cursor:pointer; transition:border-color .13s,background .13s;
+}
+.option span:last-child { min-width:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+.option.selected { border-color:var(--brand); background:var(--brand-soft); }
+.bubble { display:grid; place-items:center; flex:0 0 30px; width:30px; height:30px; border:1px solid #acb6c6; border-radius:50%; font-size:13px; font-weight:800; background:#fff; }
+.selected .bubble { background:var(--brand); color:#fff; border-color:var(--brand); }
+.option.good { border-color:var(--good); background:var(--goodbg); }
+.option.bad { border-color:var(--bad); background:var(--badbg); }
+.option.good .bubble { background:var(--good); color:#fff; border-color:var(--good); }
+.option.bad .bubble { background:var(--bad); color:#fff; border-color:var(--bad); }
+.option:disabled { cursor:default; }
+.btn {
+  min-height:44px; padding:12px 16px; border:1px solid var(--edge); border-radius:10px;
+  background:#fff; color:var(--ink); font-size:14px; font-weight:700; line-height:1.45;
+  white-space:normal; overflow-wrap:anywhere; cursor:pointer;
+}
+.btn.primary { background:var(--brand); color:#fff; border-color:var(--brand); }
+.btn.ghost { background:#f4f6fb; }
+.btn:disabled { opacity:.45; cursor:default; }
+.start-btn { width:100%; min-height:52px; padding:14px 18px; font-size:16px; }
+.nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:24px; }
+.nav .btn { padding-inline:10px; min-height:48px; }
+.bar { height:10px; margin:14px 0; border-radius:20px; overflow:hidden; background:#e7edfa; }
+.bar>span { display:block; height:100%; width:0; background:var(--brand); transition:width .2s; }
+.small { font-size:13px; color:var(--muted); }
+.qgrid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(44px,1fr)); gap:8px;
+  margin:14px 0 20px; padding:3px; max-height:252px; overflow-y:auto;
+  scrollbar-gutter:stable; overscroll-behavior:contain;
+}
+.qno {
+  position:relative; display:grid; place-items:center; min-width:44px; min-height:44px;
+  padding:6px 2px; border:1px solid var(--edge); border-radius:8px;
+  background:#f8f9fc; color:var(--muted); font-size:13px; font-weight:700; cursor:pointer;
+}
+.qno.answered { background:#e7ecff; border-color:#b9c5ff; color:#193fd2; }
+.qno.current { outline:2px solid var(--brand); outline-offset:1px; }
+.qno.correct { background:var(--goodbg); color:var(--good); border-color:#b3e8cf; }
+.qno.wrong { background:var(--badbg); color:var(--bad); border-color:#f1bdc7; }
+.qno:focus-visible { outline:3px solid #f3b945; outline-offset:2px; }
+.footer-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+#submit,#wrong,#retry,#print { grid-column:1 / -1; }
+.result { margin:0 0 24px; padding:16px; background:var(--brand-soft); border:1px solid #c6d0ff; border-radius:12px; scroll-margin-top:20px; }
+.result p { margin:4px 0 0; }
+.result .result-heading { margin:0; font-size:14px; font-weight:750; color:var(--brand); }
+.score-number { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; margin:8px 0; }
+.score-number strong { font-size:clamp(36px,5vw,44px); line-height:1.15; color:var(--brand); }
+.score-number span { color:var(--muted); }
+.result .result-student { margin:10px 0; }
+.congratulations { margin:14px 0 0; padding:14px; background:var(--goodbg); color:var(--good); border:1px solid #ace1c8; border-radius:10px; }
+.congratulations h3 { margin:0 0 4px; font-size:clamp(18px,2vw,21px); line-height:1.4; }
+.congratulations p { margin:0; }
+.result.perfect { background:#f2fcf6; border-color:#ace1c8; }
+.hint { margin-top:16px; padding:12px; background:#fff8e8; border:1px solid #f1d69d; border-radius:10px; font-size:14px; }
+.setup-intro,.help,.toggle-row,.setup-summary,.privacy-note,.hint,.result,.sidepanel p { overflow-wrap:anywhere; }
+.cmd { display:block; margin-top:10px; padding:10px; border-radius:8px; background:#f1f4fa; white-space:pre-wrap; overflow-wrap:anywhere; font:13px/1.5 Consolas,monospace; }
+.hide { display:none!important; }
+.print-only { display:none; }
+.screenreader { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+.print-heading { margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid #bbb; }
+.print-heading p { margin:4px 0; overflow-wrap:anywhere; }
+@media (hover:hover) and (pointer:fine) {
+  .option:hover:not(:disabled) { border-color:#a3b2ff; background:#fafbff; }
+  .option.selected:hover:not(:disabled) { border-color:var(--brand); background:var(--brand-soft); }
+  .btn:hover:not(:disabled),.qno:hover { filter:brightness(.97); }
+}
+@media screen and (min-width:600px) {
+  :root { --gutter:24px; }
+  .top { padding:30px 0; }
+  .top p { font-size:15px; }
+  .top .eyebrow { font-size:12px; }
+  .chip { font-size:13px; padding:6px 11px; }
+  .layout { gap:22px; margin-block:24px 56px; }
+  .mainpanel { padding:28px; }
+  .setup { margin-block:28px 56px; }
+  .setup .mainpanel { padding:32px; }
+  .form-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+  .count-row { grid-template-columns:140px minmax(0,1fr); gap:16px; }
+  .toggle-row { padding:16px; }
+  .option { padding:16px; gap:14px; font-size:16px; }
+  .nav { display:flex; justify-content:space-between; }
+  .nav .btn { min-width:150px; padding-inline:18px; }
+  .sidepanel { display:grid; grid-template-columns:minmax(0,1fr) minmax(200px,.65fr); gap:24px; padding:24px; }
+  .progress-panel { min-width:0; }
+  .qgrid { margin-bottom:0; }
+  .footer-actions { grid-template-columns:minmax(0,1fr); align-self:start; }
+  .result { padding:22px; }
+}
+@media screen and (min-width:1024px) {
+  :root { --gutter:32px; }
+  .top { padding:32px 0; }
+  .layout { grid-template-columns:minmax(0,1fr) clamp(280px,25vw,320px); gap:24px; }
+  .mainpanel { padding:32px; }
+  .sidepanel {
+    display:block; position:sticky; top:20px; padding:20px;
+    max-height:calc(100vh - 40px); max-height:calc(100dvh - 40px);
+    overflow-y:auto; scrollbar-gutter:stable;
+  }
+  .qgrid { max-height:clamp(148px,30vh,300px); max-height:clamp(148px,30dvh,300px); margin-bottom:20px; }
+}
+@media screen and (min-width:1440px) {
+  :root { --gutter:40px; }
+  .layout { gap:28px; }
+}
+@media screen {
+  .quiz-active .top { padding:16px 0; }
+  .quiz-active .top .eyebrow { display:none; }
+  .quiz-active .top h1 { margin-bottom:4px; font-size:clamp(22px,2.6vw,30px); line-height:1.25; }
+  .quiz-active .top p { font-size:14px; }
+  .quiz-active .identity { margin-top:8px; }
+  .quiz-active .stats { gap:6px; margin-top:10px; }
+  .quiz-active .chip { padding:5px 10px; font-size:12px; line-height:1.4; }
+}
+@media screen and (min-width:1024px) and (max-height:850px) {
+  .quiz-active .top { padding:12px 0; }
+  .quiz-active .top h1 { font-size:26px; line-height:1.2; }
+  .quiz-active .top p { font-size:13px; }
+  .quiz-active .identity { margin-top:6px; }
+  .quiz-active .stats { margin-top:8px; }
+  .quiz-active .chip { padding:4px 9px; }
+  .quiz-active .layout { gap:18px; margin-block:12px 24px; }
+  .quiz-active #quiz>.mainpanel { padding:16px 20px; }
+  .quiz-active .question-meta { font-size:12px; }
+  .quiz-active #question { margin:10px 0 14px; font-size:22px; line-height:1.35; }
+  .quiz-active .options { gap:8px; }
+  .quiz-active .option { min-height:48px; padding:8px 12px; font-size:15px; }
+  .quiz-active .bubble { flex-basis:28px; width:28px; height:28px; }
+  .quiz-active .nav { margin-top:14px; }
+  .quiz-active .nav .btn { min-height:44px; padding:10px 14px; }
+  .quiz-active .sidepanel { padding:16px; }
+  .quiz-active .sidepanel h3 { margin-bottom:6px; font-size:15px; }
+  .quiz-active .sidepanel p { margin:6px 0; }
+  .quiz-active .bar { height:8px; margin:10px 0; }
+  .quiz-active .qgrid { max-height:156px; margin:8px 0 14px; }
+  .quiz-active .footer-actions { gap:8px; }
+  .quiz-active .footer-actions .btn { min-height:44px; padding:10px 12px; }
+}
+@media screen and (max-height:600px) and (orientation:landscape) {
+  .top { padding-block:18px; }
+  .top .eyebrow { margin-bottom:6px; }
+  .sidepanel { position:static; max-height:none; overflow:visible; }
+  .qgrid { max-height:200px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  *,*:before,*:after { transition:none!important; }
+}
+@media print {
+  body { min-width:0; min-height:0; padding:0; background:#fff; font-size:12px; }
+  .top { background:#fff; color:#000; padding:8px 0; }
+  .top h1 { font-size:20px; }
+  .top p,.stats,.identity,.sidepanel,.nav,.screen-only { display:none!important; }
+  .shell { width:100%; max-width:none; }
+  .layout { display:block; margin:0; }
+  .mainpanel { padding:0; border:0; border-radius:0; box-shadow:none; }
+  .print-only { display:block; }
+  .question-print { page-break-inside:avoid; break-inside:avoid; margin-bottom:15px; }
+  .question-print h3 { margin:0 0 3px; font-size:13px; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .question-print p { margin:2px 0; font-size:11px; white-space:pre-wrap; overflow-wrap:anywhere; }
+}
+</style></head><body>
+<header class="top"><div class="shell"><p class="eyebrow">ÔN TẬP · QUẢN TRỊ HỆ THỐNG</p><h1>Luyện tập trắc nghiệm Windows Server</h1><p>FSRM • NTFS Disk Quota • Domain • Active Directory • FSMO</p><div class="identity" id="student-info" role="group" aria-label="Thông tin sinh viên"><span>Họ tên: <b id="student-display-name">Chưa nhập</b></span><span>MSSV: <b id="student-display-id">Chưa nhập</b></span></div><div class="stats"><span class="chip" id="quiz-size">Ngân hàng 100 câu • 4 đáp án/câu</span><span class="chip" id="quiz-order">Tùy chỉnh bài luyện tập của bạn</span><span class="chip">Thang điểm 10</span></div></div></header>
+<main class="shell setup screen-only" id="setup">
+  <section class="mainpanel" aria-labelledby="setup-title">
+    <span class="step-label">TRƯỚC KHI BẮT ĐẦU</span>
+    <h2 id="setup-title">Sẵn sàng làm bài?</h2>
+    <p class="setup-intro">Nhập thông tin sinh viên và chọn cách luyện tập phù hợp với bạn.</p>
+    <form id="setup-form">
+      <div class="form-grid">
+        <div class="field"><label for="student-name">Họ và tên <span aria-hidden="true">*</span></label><input id="student-name" name="studentName" type="text" placeholder="Ví dụ: Nguyễn Văn An" autocomplete="name" maxlength="100" required></div>
+        <div class="field"><label for="student-id">Mã số sinh viên (MSSV) <span aria-hidden="true">*</span></label><input id="student-id" name="studentId" type="text" placeholder="Nhập mã số sinh viên" autocomplete="off" maxlength="50" required></div>
+      </div>
+      <fieldset class="form-section"><legend>01 · Số lượng câu hỏi</legend><div class="count-row"><div class="field count-field"><label class="screenreader" for="question-count">Số câu hỏi (từ 1 đến 100)</label><input id="question-count" name="questionCount" type="number" min="1" max="100" step="1" value="100" aria-describedby="count-help" required></div><div class="presets" role="group" aria-label="Chọn nhanh số câu"><button type="button" class="btn preset" data-count="10" aria-pressed="false">10 câu</button><button type="button" class="btn preset" data-count="20" aria-pressed="false">20 câu</button><button type="button" class="btn preset" data-count="50" aria-pressed="false">50 câu</button><button type="button" class="btn preset active" data-count="100" aria-pressed="true">100 câu</button></div></div><p class="help" id="count-help">Nhập số nguyên từ 1 đến 100 hoặc chọn nhanh ở trên.</p></fieldset>
+      <fieldset class="form-section"><legend>02 · Cách sắp xếp đề</legend><label class="toggle-row" for="shuffle-questions"><input id="shuffle-questions" name="shuffleQuestions" type="checkbox"><span><strong>Xáo trộn câu hỏi</strong><small>Lấy ngẫu nhiên số câu đã chọn từ ngân hàng 100 câu.</small></span></label><label class="toggle-row" for="shuffle-answers"><input id="shuffle-answers" name="shuffleAnswers" type="checkbox"><span><strong>Xáo trộn đáp án</strong><small>Đổi ngẫu nhiên vị trí A, B, C, D của từng câu.</small></span></label></fieldset>
+      <p class="form-error hide" id="setup-error" role="alert"></p>
+      <p class="setup-summary" id="setup-summary" aria-live="polite">100 câu hỏi · Theo thứ tự gốc · Điểm tối đa 10</p>
+      <button class="btn primary start-btn" type="submit">Bắt đầu làm bài →</button>
+      <p class="privacy-note">Thông tin và bài làm chỉ lưu trên trình duyệt này, không gửi lên mạng.</p>
+    </form>
+  </section>
+</main>
+<div class="shell layout hide" id="quiz"><main class="mainpanel"><div class="screen-only"><section class="result hide" id="score" aria-live="polite" aria-label="Kết quả làm bài" tabindex="-1"></section><div class="question-meta"><span id="qmeta"></span><span class="section-label" id="topic"></span></div><h2 id="question" tabindex="-1"></h2><div id="options" class="options" role="group" aria-labelledby="question"></div><div id="feedback" class="hint hide"></div><div class="nav"><button class="btn ghost" id="prev" type="button">← Câu trước</button><button class="btn primary" id="next" type="button">Câu tiếp theo →</button></div></div><div class="print-only" id="print-bank"></div></main>
+<aside class="sidepanel screen-only"><div class="progress-panel"><h3>Tiến độ làm bài</h3><p class="small">Đã chọn <b id="answered">0</b> / <span id="total">100</span> câu (<span id="percent">0%</span>)</p><div class="bar" id="progress-bar" role="progressbar" aria-label="Tiến độ trả lời" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress"></span></div><p class="small">Chọn số câu để đi tới câu tương ứng.</p><div class="qgrid" id="qgrid"></div></div><div class="footer-actions"><button class="btn primary" id="submit" type="button">Nộp bài &amp; chấm điểm</button><button class="btn hide" id="wrong" type="button">Xem câu chưa đúng</button><button class="btn ghost" id="retry" type="button">Làm lại / tùy chỉnh đề</button><button class="btn" id="print" type="button">In đề ra giấy</button></div></aside></div>
+<noscript><p class="shell hint">Vui lòng bật JavaScript trong trình duyệt để bắt đầu làm bài.</p></noscript>
+<script>
+const QS=[{"id":1,"q":"FSRM (File Server Resource Manager) quản lý dữ liệu ở mức nào?","options":["Mức từng tập tin riêng lẻ trong registry","Mức phân vùng vật lý của ổ cứng","Mức tài khoản người dùng trong Active Directory","Mức thư mục (và volume)"],"answer":3,"note":""},{"id":2,"q":"FSRM gồm bao nhiêu nhóm chức năng chính?","options":["3","4","5","6"],"answer":2,"note":""},{"id":3,"q":"Nhóm chức năng nào của FSRM dùng để chặn hoặc giám sát loại file được lưu theo phần mở rộng?","options":["Quota Management","Storage Reports","File Screening","Classification"],"answer":2,"note":""},{"id":4,"q":"Chức năng Classification của FSRM là nền tảng của công nghệ nào?","options":["Windows Server Update Services","Distributed File System Replication","Dynamic Access Control","BitLocker Drive Encryption"],"answer":2,"note":""},{"id":5,"q":"Soft quota trong FSRM thường được dùng cho mục đích nào?","options":["Xóa tự động các file vượt hạn ngạch","Mã hóa dữ liệu vượt hạn ngạch","Giám sát: cho vượt hạn ngạch và chỉ cảnh báo","Ngăn chặn tuyệt đối việc ghi dữ liệu"],"answer":2,"note":""},{"id":6,"q":"Trong FSRM, Quota Template được dùng để làm gì?","options":["Tạo mẫu thiết lập quota để áp dụng lại nhiều lần","Sao lưu dữ liệu của thư mục có quota","Chặn các loại file theo phần mở rộng","Tạo báo cáo file trùng lặp"],"answer":0,"note":""},{"id":7,"q":"Tính năng Auto apply quota phù hợp nhất cho trường hợp nào?","options":["Chặn file *.exe trên toàn server","Thư mục Home Folder, mỗi thư mục con của user tự có quota riêng","Gửi email cho quản trị viên mỗi ngày","Áp quota cho toàn bộ volume hệ thống C:"],"answer":1,"note":""},{"id":8,"q":"Báo cáo Storage Report nào liệt kê các tập tin không được truy cập trong khoảng thời gian đã cấu hình?","options":["Least Recently Accessed","Files by Owner","Large Files","Quota Usage"],"answer":0,"note":""},{"id":9,"q":"Báo cáo Duplicate Files xác định tập tin trùng lặp dựa trên tiêu chí nào?","options":["Chủ sở hữu và quyền NTFS","Phần mở rộng và thư mục chứa","Kích thước và thời điểm sửa đổi cuối","Ngày tạo và thuộc tính ẩn"],"answer":2,"note":"Lưu ý: mô tả lựa chọn C chưa đầy đủ; FSRM đối chiếu tên, kích thước và thời điểm sửa đổi khi phát hiện tệp trùng lặp."},{"id":10,"q":"Biến [Source Io Owner] trong thông báo quota của FSRM có ý nghĩa gì?","options":["Ngưỡng làm phát sinh thông báo","Đường dẫn đang áp dụng quota","Tên người dùng thực hiện thao tác I/O gây vượt ngưỡng","Danh sách email quản trị mặc định"],"answer":2,"note":""},{"id":11,"q":"Trong FSRM, cấu hình SMTP để gửi email thông báo được thực hiện ở đâu?","options":["Storage Reports Management → Schedule a New Report Task","File Groups → Create File Group","Quota Templates → Create Quota Template","Configure Options → tab E-mail Notifications"],"answer":3,"note":""},{"id":12,"q":"Theo tài liệu, sự khác biệt cốt lõi giữa Quota và File Screening là gì?","options":["Cả hai đều chỉ dùng để tạo báo cáo","Quota quản lý loại file, File Screening quản lý dung lượng","Quota chỉ dùng cho volume, File Screening chỉ dùng cho user","Quota quản lý “được lưu bao nhiêu”, File Screening quản lý “được lưu những loại tập tin nào”"],"answer":3,"note":""},{"id":13,"q":"File Group trong FSRM gồm hai thành phần nào?","options":["Files to include và Files to exclude","Threshold và Action","Hard quota và Soft quota","Active và Passive"],"answer":0,"note":""},{"id":14,"q":"Quản trị viên muốn người dùng VẪN lưu được file *.mp4 nhưng hệ thống phải thông báo cho quản trị viên. Nên chọn chế độ nào?","options":["Passive Screening","Active Screening","Auto apply quota","Hard quota"],"answer":0,"note":""},{"id":15,"q":"Khi một File Screen ở chế độ Active, điều gì xảy ra lúc user lưu file thuộc nhóm bị cấm?","options":["File được lưu nhưng bị đổi tên tự động","File được lưu và chỉ ghi vào báo cáo Large Files","File được lưu vào thư mục cách ly","Thao tác lưu bị từ chối, có thể kèm email/event log/command/report"],"answer":3,"note":""},{"id":16,"q":"Thư mục D:\\Data có quota template “200 MB with 50 MB Extension”. Ý nghĩa hợp lý nhất của template này là gì?","options":["Giới hạn 200 MB, khi chạm ngưỡng có thể tự nới thêm 50 MB một lần","Mỗi user được 200 MB, mỗi file tối đa 50 MB","Giới hạn 50 MB, cảnh báo ở mức 200 MB","Giới hạn 250 MB cố định ngay từ đầu, không thông báo"],"answer":0,"note":""},{"id":17,"q":"Một thư mục được đặt ngưỡng thông báo 85%, 95%, 100%. Với mỗi ngưỡng, hành động nào KHÔNG nằm trong các hành động FSRM hỗ trợ theo tài liệu?","options":["Ghi Event log","Gửi email","Chạy Command/Script","Tự động xóa file lớn nhất"],"answer":3,"note":""},{"id":18,"q":"Trong ô “Default administrator recipients” của FSRM, nhiều địa chỉ email được phân tách bằng ký tự nào?","options":["Dấu chấm phẩy (;)","Khoảng trắng","Dấu phẩy (,)","Dấu gạch đứng (|)"],"answer":0,"note":""},{"id":19,"q":"Nhược điểm lớn nhất của File Screening được nêu trong tài liệu là gì?","options":["Đổi đuôi file sẽ vượt qua được File Screening","Chỉ áp dụng được trên ổ FAT32","Không thể gửi email cảnh báo","Không áp dụng được cho thư mục con"],"answer":0,"note":""},{"id":20,"q":"Để dùng FSRM hỗ trợ chống ransomware, cách triển khai đúng theo tài liệu là gì?","options":["Tạo báo cáo Files by Owner hằng ngày","Tạo File Group chứa đuôi file mã độc và gán hành động (ví dụ chặn user) khi phát hiện","Tạo Hard quota 0 MB cho toàn bộ ổ đĩa","Bật Disk Quota NTFS cho volume"],"answer":1,"note":"Đây chỉ là một biện pháp hỗ trợ phát hiện ransomware dựa trên phần mở rộng, không thay thế biện pháp bảo mật tổng thể."},{"id":21,"q":"Lệnh PowerShell nào cài đặt vai trò FSRM kèm công cụ quản trị trên Windows Server?","options":["Install-WindowsFeature FS-Resource-Manager -IncludeManagementTools","Install-WindowsFeature AD-Domain-Services -IncludeManagementTools","Enable-FsrmFeature -All","Add-WindowsCapability -Name FSRM -Online"],"answer":0,"note":""},{"id":22,"q":"Đoạn lệnh sau tạo loại quota nào trên thư mục D:\\Share\\KeToan?\nNew-FsrmQuota -Path \"D:\\Share\\KeToan\" -Size 500MB -SoftLimit","options":["Quota 500 MB áp cho từng user trên volume","Auto apply quota 500 MB cho mọi thư mục con","Hard quota 500 MB: chặn ghi khi vượt","Soft quota 500 MB: cho vượt, chỉ cảnh báo"],"answer":3,"note":""},{"id":23,"q":"Lệnh nào áp dụng Auto apply quota theo template “2 GB Limit” cho thư mục D:\\Home để mỗi thư mục con có quota riêng?","options":["New-FsrmAutoQuota -Path \"D:\\Home\" -Template \"2 GB Limit\"","New-FsrmQuotaTemplate -Path \"D:\\Home\" -Size 2GB","New-FsrmQuota -Path \"D:\\Home\" -Template \"2 GB Limit\"","Set-FsrmSetting -AutoQuota \"D:\\Home\" -Size 2GB"],"answer":0,"note":""},{"id":24,"q":"Lệnh nào cấu hình máy chủ SMTP, email quản trị và địa chỉ người gửi mặc định của FSRM?","options":["New-FsrmAction -Type Email -SmtpServer \"mail.congty.vn\"","Set-FsrmSetting -SmtpServer \"mail.congty.vn\" -AdminEmailAddress \"admin@congty.vn\" -FromEmailAddress \"fsrm@congty.vn\"","Set-FsrmQuota -SmtpServer \"mail.congty.vn\"","Send-MailMessage -SmtpServer \"mail.congty.vn\" -To \"admin@congty.vn\""],"answer":1,"note":""},{"id":25,"q":"Sau khi cấu hình SMTP, lệnh PowerShell nào tương đương nút “Send Test E-mail”?","options":["Get-FsrmSetting -Test","Send-FsrmTestEmail -ToEmailAddress \"admin@congty.vn\"","Test-FsrmSmtp -Address \"admin@congty.vn\"","Invoke-FsrmEmail -Test"],"answer":1,"note":"Send-FsrmTestEmail là cmdlet dùng để gửi email thử của FSRM."},{"id":26,"q":"Đoạn lệnh sau tạo đối tượng gì?\nNew-FsrmFileGroup -Name \"Video\" -IncludePattern @(\"*.mp4\",\"*.avi\",\"*.mkv\")","options":["Một File Screen chặn file video","Một báo cáo Large Files cho file video","Một quota template tên “Video”","Một File Group tên “Video” gồm các mẫu tên tệp video"],"answer":3,"note":""},{"id":27,"q":"Đoạn lệnh sau tạo File Screen ở chế độ nào?\nNew-FsrmFileScreen -Path \"D:\\TaiLieu\" -IncludeGroup \"Video\" -Active","options":["Passive Screening: cho lưu nhưng thông báo","Hard quota cho file video","File Screen Exception cho file video","Active Screening: không cho lưu file video vào D:\\TaiLieu"],"answer":3,"note":""},{"id":28,"q":"Quản trị viên muốn gửi email cho quản trị viên mặc định khi quota đạt 85%. Đoạn lệnh nào đúng?","options":["$t = New-FsrmQuotaThreshold -Email \"admin\" -Size 85; New-FsrmQuota -Path \"D:\\Data\" -Threshold $t","Set-FsrmSetting -Threshold 85 -MailTo \"[Admin Email]\"","New-FsrmQuota -Path \"D:\\Data\" -Size 1GB -Email 85%","$a = New-FsrmAction -Type Email -MailTo \"[Admin Email]\" -Subject \"Quota [Quota Path] đạt [Quota Threshold]%\"; $t = New-FsrmQuotaThreshold -Percentage 85 -Action $a; New-FsrmQuota -Path \"D:\\Data\" -Size 1GB -Threshold $t"],"answer":3,"note":""},{"id":29,"q":"Trong nội dung email thông báo FSRM, chuỗi nào sẽ hiển thị tỷ lệ quota đã sử dụng?\nBody = \"Thu muc [Quota Path] da dung ??? cua [Quota Limit MB] MB\"","options":["[Quota Threshold]","[Quota Used Percent]","[Quota Used MB]","[Source Io Owner]"],"answer":1,"note":""},{"id":30,"q":"Hành động FSRM nào cho phép tự động chạy script chặn user khi phát hiện file mã độc (ứng dụng chống ransomware)?","options":["New-FsrmAction -Type Command -Command \"C:\\Windows\\System32\\cmd.exe\" -CommandParameters \"/c C:\\Scripts\\block.cmd [Source Io Owner]\" -SecurityLevel LocalSystem","New-FsrmAction -Type Report -ReportTypes DuplicateFiles","New-FsrmAction -Type Email -MailTo \"[Admin Email]\"","New-FsrmAction -Type Event -EventType Warning"],"answer":0,"note":""},{"id":31,"q":"Lệnh nào tạo ngay một báo cáo liệt kê file lớn và file trùng lặp trên D:\\Share?","options":["New-FsrmStorageReport -Name \"BaoCao\" -Namespace @(\"D:\\Share\") -ReportType @(\"LargeFiles\",\"DuplicateFiles\") -Interactive","Get-FsrmFileScreen -Path \"D:\\Share\" -ReportType DuplicateFiles","New-FsrmFileGroup -Name \"BaoCao\" -IncludePattern \"*.*\"","New-FsrmQuota -Path \"D:\\Share\" -Report LargeFiles"],"answer":0,"note":""},{"id":32,"q":"Đoạn lệnh sau dùng để làm gì?\nGet-FsrmQuota | Where-Object { $_.Usage -ge 0.9 * $_.Size } | Select-Object Path, Size, Usage","options":["Tăng giới hạn quota lên 90%","Xóa các quota vượt 90%","Tạo ngưỡng thông báo 90% cho mọi quota","Liệt kê các quota đã dùng từ 90% giới hạn trở lên"],"answer":3,"note":""},{"id":33,"q":"Disk quota là tính năng của hệ thống tập tin nào?","options":["FAT32","exFAT","ReFS chỉ trên Windows 10","NTFS"],"answer":3,"note":""},{"id":34,"q":"Disk quota tính dung lượng sử dụng của user dựa trên yếu tố nào?","options":["Chủ quyền (ownership) của file","Vị trí thư mục chứa file","Quyền Share của thư mục","Phần mở rộng của file"],"answer":0,"note":""},{"id":35,"q":"Để thiết lập Disk quota, người thực hiện cần điều kiện gì?","options":["Ổ đĩa phải định dạng FAT32","Có quyền admin, trên ổ NTFS và cấu hình theo từng ổ đĩa","Chỉ cần là Domain User","Phải cài vai trò FSRM trước"],"answer":1,"note":""},{"id":36,"q":"Đường dẫn cấu hình Disk quota trên giao diện là gì?","options":["Control Panel → User Accounts → Quota","Volume Properties → Quota","Server Manager → File and Storage → Quotas","FSRM → Quota Management"],"answer":1,"note":""},{"id":37,"q":"Trong NTFS Disk Quota, tùy chọn nào xác định chế độ hard hoặc soft?","options":["Deny disk space to users exceeding quota limit","Log event when a user exceeds quota limit","Quota Entries","Enable quota management"],"answer":0,"note":""},{"id":38,"q":"Kênh thông báo duy nhất của NTFS Disk Quota theo bảng so sánh là gì?","options":["Email","Storage Report","Event log","Command/Script"],"answer":2,"note":""},{"id":39,"q":"User A di chuyển (move) file 100 MB của mình sang thư mục khác trong CÙNG ổ đĩa đã bật quota. Dung lượng quota của A thay đổi thế nào?","options":["Tăng thêm 100 MB","Tăng gấp ba","Giảm 100 MB","Không thay đổi"],"answer":3,"note":""},{"id":40,"q":"User A copy file 100 MB của mình sang thư mục khác trong CÙNG ổ đĩa đã bật quota. Dung lượng A sử dụng cho file này là bao nhiêu?","options":["0 MB vì copy không tính quota","100 MB (không đổi)","50 MB do NTFS nén","200 MB (tăng gấp đôi)"],"answer":3,"note":""},{"id":41,"q":"Quản trị viên thực hiện Take ownership một file 1 GB của user B trên ổ có Disk quota. Kết quả nào đúng?","options":["Dung lượng file được tính sang quota của quản trị viên, quota của B giảm 1 GB","Quota của cả hai cùng tăng 1 GB","Quota của B không đổi vì file vẫn nằm trong thư mục của B","File bị xóa khỏi quota của mọi user"],"answer":0,"note":""},{"id":42,"q":"Tính năng Quota Entries trong NTFS Disk Quota cho phép làm gì?","options":["Gửi email khi vượt ngưỡng","Chặn file theo phần mở rộng","Tạo template áp dụng cho thư mục","Đặt mức riêng cho từng user và Export/Import sang volume khác"],"answer":3,"note":""},{"id":43,"q":"Yêu cầu: giới hạn mỗi thư mục phòng ban 5 GB, không phân biệt user, có gửi email khi đạt 90%. Giải pháp phù hợp nhất?","options":["File Screening Passive","Quota Entries","FSRM Quota","NTFS Disk Quota"],"answer":2,"note":""},{"id":44,"q":"Nhận định nào ĐÚNG khi so sánh NTFS Disk Quota và FSRM Quota?","options":["FSRM quota tính theo ownership của user","NTFS Disk Quota có template nhưng không có soft quota","Cả hai đều hỗ trợ soft và hard; chỉ FSRM có template/auto apply","Chỉ FSRM hỗ trợ hard quota"],"answer":2,"note":""},{"id":45,"q":"Lệnh nào bật VÀ thực thi (enforce) Disk quota trên ổ D: bằng dòng lệnh?","options":["fsutil quota disable D:","fsutil quota track D:","fsutil quota query D:","fsutil quota enforce D:"],"answer":3,"note":""},{"id":46,"q":"Lệnh dưới đây đặt mức cảnh báo và giới hạn cho user CONGTY\\an. Giá trị nào là giới hạn (limit)?\nfsutil quota modify D: 900000000 1000000000 CONGTY\\an","options":["Không có giới hạn, chỉ ghi log","Cả hai đều là mức cảnh báo","900000000 byte (khoảng 900 MB)","1000000000 byte (khoảng 1 GB)"],"answer":3,"note":""},{"id":47,"q":"Để quota của user B được giải phóng khi chuyển file cho quản trị viên, lệnh nào thực hiện Take ownership file D:\\Data\\baocao.docx?","options":["icacls D:\\Data\\baocao.docx /grant B:F","takeown /f D:\\Data\\baocao.docx","cacls D:\\Data\\baocao.docx /e /r B","attrib +r D:\\Data\\baocao.docx"],"answer":1,"note":""},{"id":48,"q":"Domain là gì theo tài liệu?","options":["Một giao thức chia sẻ file trong mạng LAN","Một thiết bị phần cứng chuyên dụng để lưu trữ dữ liệu","Một nhóm máy tính ngang hàng tự quản lý tài khoản","Khái niệm logic về một nhóm máy tính có sự quản lý tập trung"],"answer":3,"note":""},{"id":49,"q":"Thành phần vật lý nào BẮT BUỘC phải có ít nhất một máy để tạo nên domain?","options":["Member Server","Domain Controller","File Server","Workstation"],"answer":1,"note":""},{"id":50,"q":"Account, OU, Site trong domain được gọi chung là gì?","options":["Đối tượng (Object)","Phân vùng (Partition)","Thuộc tính (Attribute)","Vai trò (Role)"],"answer":0,"note":""},{"id":51,"q":"Tên thương mại của dịch vụ danh bạ do Microsoft sử dụng là gì?","options":["OpenLDAP","Active Directory Service","Novell eDirectory","Network Information Service"],"answer":1,"note":""},{"id":52,"q":"User được tạo và quản lý trong Active Directory được gọi là gì?","options":["Domain User","Guest User","SAM User","Local User"],"answer":0,"note":""},{"id":53,"q":"Trong mô hình Workgroup, tài khoản người dùng được lưu ở đâu?","options":["Tập trung trên Domain Controller","Trong Global Catalog","Trong SAM trên từng máy","Trên DNS server"],"answer":2,"note":""},{"id":54,"q":"Workgroup phù hợp với quy mô khoảng bao nhiêu máy theo tài liệu?","options":["Không giới hạn","Dưới 100–200 máy","Dưới 10–20 máy","Dưới 1.000 máy"],"answer":2,"note":""},{"id":55,"q":"Tính năng nào chỉ có trong môi trường Domain mà Workgroup không có?","options":["Kết nối peer-to-peer","Tài khoản local","Group Policy, Single Sign-On, Kerberos","Chia sẻ thư mục qua mạng"],"answer":2,"note":""},{"id":56,"q":"Mô hình mạng của Workgroup và Domain lần lượt là gì?","options":["Client/server; Peer-to-peer","Peer-to-peer cho cả hai","Peer-to-peer; Client/server quản lý tập trung","Client/server cho cả hai"],"answer":2,"note":""},{"id":57,"q":"Trong mô hình “single domain”, mối quan hệ giữa domain, tree và forest là gì?","options":["Có một tree chứa nhiều forest","Domain nằm ngoài forest","Domain, tree và forest trùng nhau","Có một forest chứa nhiều tree"],"answer":2,"note":""},{"id":58,"q":"Hai domain congty.vn và hcm.congty.vn trong cùng forest thuộc quan hệ nào?","options":["Hai forest khác nhau","Cùng một tree vì kế thừa không gian tên","Không có quan hệ tin cậy","Hai tree khác nhau"],"answer":1,"note":""},{"id":59,"q":"Trong sơ đồ, congty.vn và sanpham.vn cùng một forest. Nhận định nào đúng?","options":["Chúng thuộc hai tree khác nhau, có trust hai chiều bắc cầu trong forest","Chúng không thể truy cập nhau vì khác tên miền","Chúng thuộc cùng một tree","Cần tạo Forest Trust giữa hai domain này"],"answer":0,"note":""},{"id":60,"q":"Theo sơ đồ quan hệ AD, các domain trong cùng forest dùng chung thành phần nào?","options":["Cùng một cơ sở dữ liệu SAM","Cùng một OU gốc","Schema và Configuration; GC tra cứu toàn forest","Cùng một mật khẩu Administrator"],"answer":2,"note":""},{"id":61,"q":"Để congty.vn và doitac.vn (forest khác) truy cập tài nguyên của nhau, cần thiết lập gì?","options":["Không cần gì, trust tự động bắc cầu","Đổi tên doitac.vn thành doitac.congty.vn","Gộp hai domain vào cùng OU","Forest Trust (tùy cấu hình)"],"answer":3,"note":""},{"id":62,"q":"Theo sơ đồ, OU (Organizational Unit) được dùng để làm gì?","options":["Tổ chức đối tượng, liên kết GPO, ủy quyền quản trị","Nhân bản dữ liệu giữa các forest","Cấp RID cho Domain Controller","Làm ranh giới bảo mật của forest"],"answer":0,"note":""},{"id":63,"q":"Nhận định nào ĐÚNG về trust trong cùng forest?","options":["Trust thay thế cho quyền NTFS","Trust phục vụ xác thực; quyền truy cập tài nguyên vẫn phải được cấp riêng","Có trust là user tự động có toàn quyền trên domain kia","Trust chỉ là một chiều và không bắc cầu"],"answer":1,"note":""},{"id":64,"q":"Distinguished Name (DN) nào đúng cho user An nằm trong OU KeToan của domain hcm.congty.vn?","options":["DC=vn,DC=congty,DC=hcm,OU=KeToan,CN=An","CN=An,OU=KeToan,DC=hcm,DC=congty,DC=vn","OU=An,CN=KeToan,DC=hcm,DC=congty,DC=vn","CN=An,OU=KeToan,DC=hcm.congty.vn"],"answer":1,"note":""},{"id":65,"q":"Đoạn PowerShell sau thực hiện công việc gì?\nNew-ADOrganizationalUnit -Name \"NhanSu\" -Path \"DC=hcm,DC=congty,DC=vn\"\nNew-ADUser -Name \"Binh\" -SamAccountName \"binh\" `\n-Path \"OU=NhanSu,DC=hcm,DC=congty,DC=vn\" `\n-AccountPassword (Read-Host -AsSecureString \"Mat khau\") -Enabled $true","options":["Tạo local user binh trên máy hcm","Tạo group NhanSu và thêm binh vào group","Tạo OU NhanSu trong hcm.congty.vn và tạo domain user binh trong OU đó","Tạo domain con nhansu.hcm.congty.vn"],"answer":2,"note":""},{"id":66,"q":"Lệnh nào liệt kê toàn bộ domain và các Global Catalog trong forest hiện tại?","options":["Get-ADDomain | Select-Object Forest","Get-ADForest | Select-Object Domains, GlobalCatalogs","Get-ADUser -Filter * | Select-Object Domain","Get-LocalGroup | Select-Object Domains"],"answer":1,"note":""},{"id":67,"q":"Lệnh nào kiểm tra các quan hệ trust của domain hiện tại?","options":["Test-Connection -Trust","Get-ADTrust -Filter *","Get-ADForest -Trust","Get-ADOrganizationalUnit -Filter *"],"answer":1,"note":""},{"id":68,"q":"FSMO là viết tắt của cụm từ nào?","options":["Forest Shared Master Objects","Flexible Server Multi Operations","Flexible Single Master Operations","File System Management Operations"],"answer":2,"note":""},{"id":69,"q":"Active Directory có bao nhiêu vai trò FSMO?","options":["5 (2 phạm vi forest, 3 phạm vi domain)","5 (3 phạm vi forest, 2 phạm vi domain)","3 (đều phạm vi forest)","4 (đều phạm vi domain)"],"answer":0,"note":""},{"id":70,"q":"Hai vai trò FSMO có phạm vi toàn forest là gì?","options":["Schema Master và RID Master","Schema Master và Domain Naming Master","PDC Emulator và Infrastructure Master","RID Master và PDC Emulator"],"answer":1,"note":""},{"id":71,"q":"Vai trò nào là nguồn thời gian chuẩn và xử lý khóa tài khoản (lockout) trong domain?","options":["Domain Naming Master","PDC Emulator","Schema Master","RID Master"],"answer":1,"note":""},{"id":72,"q":"Schema trong Active Directory định nghĩa điều gì?","options":["Lịch nhân bản giữa các site","Các bản ghi DNS của domain","Các lớp đối tượng và thuộc tính được phép tồn tại trong AD","Danh sách các máy trạm trong domain"],"answer":2,"note":""},{"id":73,"q":"Vì sao Active Directory cần FSMO dù đã dùng cơ chế multi-master?","options":["Để tăng tốc độ đăng nhập cho user","Một số thao tác cần một đầu mối duy nhất tại một thời điểm để tránh xung đột","FSMO thay thế hoàn toàn multi-master","Multi-master không cho phép nhân bản dữ liệu"],"answer":1,"note":""},{"id":74,"q":"Theo tài liệu, công thức hình thành SID của một đối tượng bảo mật là gì?","options":["SID của đối tượng = SID của DC + mật khẩu","SID của đối tượng = GUID + tên đăng nhập","SID của đối tượng = DN + RID","SID của đối tượng = SID của domain + RID"],"answer":3,"note":""},{"id":75,"q":"RID Master đang offline. Một DC vẫn còn RID trong khối đã được cấp. Điều gì xảy ra khi tạo user mới trên DC đó?","options":["DC tự động trở thành RID Master","Không tạo được user nào","User được tạo nhưng không có SID","Vẫn tạo được user bình thường"],"answer":3,"note":""},{"id":76,"q":"Khi nào việc RID Master không liên lạc được gây ảnh hưởng thực sự?","options":["Khi DC cần khối RID mới để tạo thêm đối tượng bảo mật","Khi sửa Schema","Khi user đổi mật khẩu","Khi máy trạm đồng bộ thời gian"],"answer":0,"note":""},{"id":77,"q":"User vừa đổi mật khẩu trên DC1, sau đó đăng nhập qua DC2 chưa kịp nhân bản. DC2 xử lý thế nào trước khi kết luận mật khẩu sai?","options":["Hỏi RID Master","Hỏi Schema Master","Hỏi Infrastructure Master","Kiểm tra với PDC Emulator"],"answer":3,"note":""},{"id":78,"q":"Group DuAnChung (congty.vn) có thành viên là user An (hcm.congty.vn). Khi An bị đổi tên/di chuyển, vai trò nào cập nhật tham chiếu này?","options":["Infrastructure Master","RID Master","Schema Master","Domain Naming Master"],"answer":0,"note":""},{"id":79,"q":"Nhận định nào về Domain Naming Master là ĐÚNG?","options":["Có một bản trong mỗi domain","Cấp SID cho các domain mới","Bảo đảm tính duy nhất của tên domain trong forest, không phải máy quản lý mọi bản ghi DNS","Là máy chủ quản lý toàn bộ bản ghi DNS"],"answer":2,"note":""},{"id":80,"q":"Forest congty.vn có 3 domain: congty.vn, hcm.congty.vn, sanpham.vn. Tổng số vai trò FSMO trong forest là bao nhiêu?","options":["9","15","11","5"],"answer":2,"note":"2 vai trò cấp forest + 3 vai trò cấp domain × 3 domain = 11 vai trò FSMO."},{"id":81,"q":"Domain có nhiều DC nhưng không phải DC nào cũng là Global Catalog. Khuyến nghị đặt Infrastructure Master thế nào?","options":["Không đặt trên DC là Global Catalog (trừ khi mọi DC đều là GC)","Bắt buộc đặt trên DC là Global Catalog","Đặt trên DC ở forest khác","Đặt trên máy Member Server"],"answer":0,"note":"Quy tắc này có ngoại lệ khi tất cả DC đều là GC hoặc cấu hình AD hiện đại như AD Recycle Bin được bật."},{"id":82,"q":"Lệnh nào hiển thị nhanh DC đang giữ cả 5 vai trò FSMO?","options":["dcdiag /test:dns","nltest /dclist","repadmin /showrepl","netdom query fsmo"],"answer":3,"note":""},{"id":83,"q":"Đoạn lệnh nào trả về đúng ba vai trò FSMO phạm vi domain?","options":["Get-ADForest | Select-Object SchemaMaster, DomainNamingMaster","Get-ADForest | Select-Object RIDMaster, PDCEmulator, InfrastructureMaster","Get-ADDomainController | Select-Object SchemaMaster","Get-ADDomain | Select-Object RIDMaster, PDCEmulator, InfrastructureMaster"],"answer":3,"note":""},{"id":84,"q":"Lệnh sau thực hiện gì?\nMove-ADDirectoryServerOperationMasterRole -Identity \"DC02\" `\n-OperationMasterRole PDCEmulator, RIDMaster","options":["Nâng cấp DC02 thành Global Catalog","Chuyển vai trò PDC Emulator và RID Master sang DC02","Tạo DC02 mới với vai trò PDC","Xóa vai trò PDC Emulator khỏi DC02"],"answer":1,"note":""},{"id":85,"q":"DC giữ Schema Master hỏng vĩnh viễn, không thể khởi động lại. Thao tác đúng là gì?","options":["Chạy gpupdate /force trên mọi DC","Seize vai trò sang DC khác: Move-ADDirectoryServerOperationMasterRole -Identity DC02 -OperationMasterRole SchemaMaster -Force","Chờ DC cũ online để transfer bình thường","Tạo forest mới vì mất Schema"],"answer":1,"note":""},{"id":86,"q":"Lệnh sau chạy trên PDC Emulator của domain gốc forest có mục đích gì?\nw32tm /config /manualpeerlist:\"pool.ntp.org\" /syncfromflags:manual /reliable:yes /update","options":["Đồng bộ mật khẩu với nguồn ngoài","Cấu hình PDC Emulator lấy giờ từ nguồn NTP bên ngoài, làm nguồn thời gian tin cậy cho domain","Tắt đồng bộ thời gian trên toàn domain","Đặt máy trạm đồng bộ giờ từ PDC"],"answer":1,"note":""},{"id":87,"q":"Kết quả “whoami /user” của một domain user là S-1-5-21-1004336348-1177238915-682003330-1105. Phần “1105” là gì?","options":["RID do DC cấp từ khối RID của RID Master","Số thứ tự của Domain Controller","Mã của PDC Emulator","SID của domain"],"answer":0,"note":""},{"id":88,"q":"Đoạn PowerShell sau dùng để làm gì?\nSearch-ADAccount -LockedOut | Unlock-ADAccount","options":["Tìm và mở khóa tất cả tài khoản đang bị lockout","Khóa toàn bộ tài khoản trong domain","Liệt kê tài khoản hết hạn và xóa đi","Đặt lại mật khẩu cho user bị khóa"],"answer":0,"note":""},{"id":89,"q":"Theo tài liệu, điều kiện cần để tạo máy Domain Controller là gì?","options":["Phải có DNS server","Phải cài FSRM","Phải có DHCP server","Phải có ít nhất 10 máy trạm"],"answer":0,"note":""},{"id":90,"q":"Theo tài liệu, lệnh nào gõ trong Run để mở trình cài đặt Active Directory?","options":["GPUPDATE","DSA.MSC","DCPROMO","NETPLWIZ"],"answer":2,"note":"DCPROMO là cách cài đặt AD DS trên Windows Server đời cũ; từ 2012 dùng Server Manager hoặc PowerShell."},{"id":91,"q":"Sau khi cài đặt xong DC, mặc định Domain User có đặc điểm nào?","options":["Được phép logon locally trên DC","Không cần mật khẩu","Phải dùng mật khẩu phức tạp và không có quyền Logon locally trên DC","Tự động là thành viên Domain Admins"],"answer":2,"note":""},{"id":92,"q":"Lệnh nào được dùng để cập nhật ngay thay đổi policy trong domain?","options":["dcdiag /fix","ipconfig /flushdns","gpresult /r","gpupdate /force"],"answer":3,"note":""},{"id":93,"q":"Bước đầu tiên trên máy trạm trước khi join domain là gì?","options":["Cài vai trò AD DS trên máy trạm","Tắt card mạng","Đặt Preferred DNS trỏ về DNS server của domain","Đặt Default Gateway trỏ về DC"],"answer":2,"note":""},{"id":94,"q":"Mặc định một domain user (không phải admin) có thể join tối đa bao nhiêu máy vào domain?","options":["Không giới hạn","5 máy","10 máy","20 máy"],"answer":2,"note":""},{"id":95,"q":"Sau khi máy trạm join domain thành công, nhóm nào tự động được thêm vào nhóm Local Administrators của máy trạm?","options":["Enterprise Read-only Domain Controllers","Domain Admins","Domain Users","Domain Guests"],"answer":1,"note":""},{"id":96,"q":"Vì sao DC bắt buộc phải có DNS?","options":["DNS dùng để cấp phát địa chỉ IP","Máy trạm dùng DNS (bản ghi SRV) để định vị Domain Controller","DNS thay thế cho Kerberos","DNS lưu trữ mật khẩu của user"],"answer":1,"note":""},{"id":97,"q":"Lệnh PowerShell nào tạo forest mới congty.vn kèm DNS (thay cho DCPROMO trên Windows Server 2012 trở lên)?","options":["Add-Computer -DomainName \"congty.vn\" -Restart","Install-ADDSForest -DomainName \"congty.vn\" -DomainNetbiosName \"CONGTY\" -InstallDns","Install-ADDSDomain -NewDomainName \"congty.vn\" -DomainType ChildDomain","New-ADDomain -Name \"congty.vn\""],"answer":1,"note":""},{"id":98,"q":"Lệnh nào tạo domain con hcm.congty.vn dưới domain cha congty.vn?","options":["Install-ADDSDomainController -DomainName \"hcm\"","Install-ADDSDomain -NewDomainName \"sanpham.vn\" -DomainType TreeDomain","Install-ADDSForest -DomainName \"hcm.congty.vn\"","Install-ADDSDomain -NewDomainName \"hcm\" -ParentDomainName \"congty.vn\" -DomainType ChildDomain -InstallDns"],"answer":3,"note":""},{"id":99,"q":"Đoạn lệnh sau chạy trên máy trạm thực hiện các bước nào trong quy trình join domain?\nSet-DnsClientServerAddress -InterfaceAlias \"Ethernet\" -ServerAddresses 192.168.1.10\nAdd-Computer -DomainName \"congty.vn\" -Credential CONGTY\\Administrator -Restart","options":["Chỉ kiểm tra kết nối tới DNS server","Đặt Preferred DNS về DNS của domain, join domain bằng tài khoản domain rồi khởi động lại","Tạo DC mới và cài DNS","Đổi tên máy và join workgroup"],"answer":1,"note":""},{"id":100,"q":"Lệnh nào kiểm tra giới hạn số máy mà một domain user được phép join (mặc định 10)?","options":["Get-ADComputer -Filter * | Measure-Object","Get-ADDefaultDomainPasswordPolicy","Get-ADObject (Get-ADDomain).DistinguishedName -Properties ms-DS-MachineAccountQuota","Get-ADUser -Filter * -Properties MaxComputers"],"answer":2,"note":"ms-DS-MachineAccountQuota là thuộc tính trên đối tượng domain; mặc định 10."}];
+const CACHEKEY = 'ws100quiz_v4';
+const alph = ['A', 'B', 'C', 'D'];
+const sections = [{first:1,title:'FSRM'}, {first:33,title:'Disk Quota'}, {first:48,title:'Domain & Active Directory'}, {first:68,title:'FSMO & Quản trị Domain'}];
+const el = id => document.getElementById(id);
+const motion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+let state = null;
+
+function validSavedState(saved) {
+  if (!saved || !saved.student || !saved.settings) return false;
+  const {student, settings, questionOrder, optionOrders, answers} = saved;
+  if (typeof student.name !== 'string' || !student.name.trim() || student.name.length > 100 ||
+      typeof student.id !== 'string' || !student.id.trim() || student.id.length > 50) return false;
+  if (!Number.isInteger(settings.count) || settings.count < 1 || settings.count > QS.length ||
+      typeof settings.shuffleQuestions !== 'boolean' || typeof settings.shuffleAnswers !== 'boolean') return false;
+  if (!Array.isArray(questionOrder) || questionOrder.length !== settings.count ||
+      new Set(questionOrder).size !== settings.count ||
+      !questionOrder.every(index => Number.isInteger(index) && index >= 0 && index < QS.length)) return false;
+  if (!Array.isArray(optionOrders) || optionOrders.length !== settings.count ||
+      !optionOrders.every(order => Array.isArray(order) && order.length === 4 &&
+        new Set(order).size === 4 && order.every(index => Number.isInteger(index) && index >= 0 && index < 4))) return false;
+  return Array.isArray(answers) && answers.length === settings.count &&
+    answers.every(answer => answer === null || (Number.isInteger(answer) && answer >= 0 && answer < 4)) &&
+    Number.isInteger(saved.current) && saved.current >= 0 && saved.current < settings.count &&
+    typeof saved.graded === 'boolean';
+}
+
+try {
+  const saved = JSON.parse(localStorage.getItem(CACHEKEY));
+  if (validSavedState(saved)) state = saved;
+} catch (error) { /* Storage can be unavailable; the quiz still works in memory. */ }
+
+function persist() {
+  try {
+    if (state) localStorage.setItem(CACHEKEY, JSON.stringify(state));
+    else localStorage.removeItem(CACHEKEY);
+  } catch (error) {
+  }
+}
+
+function shuffle(items) {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function sessionQuestions() { return state.questionOrder.map(index => QS[index]); }
+function total() { return state.questionOrder.length; }
+function count() { return state.answers.filter(answer => answer !== null).length; }
+function correctCount() {
+  return sessionQuestions().reduce((sum, question, index) => sum + (state.answers[index] === question.answer ? 1 : 0), 0);
+}
+function sectionFor(question) { return [...sections].reverse().find(section => question.id >= section.first).title; }
+function formatScore(value) { return Number(value.toFixed(2)).toLocaleString('vi-VN', {maximumFractionDigits:2}); }
+
+function updateSetupSummary() {
+  const size = Number(el('question-count').value);
+  const valid = Number.isInteger(size) && size >= 1 && size <= QS.length;
+  document.querySelectorAll('[data-count]').forEach(button => {
+    const active = valid && Number(button.dataset.count) === size;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  const order = el('shuffle-questions').checked ? 'Câu hỏi ngẫu nhiên' : 'Theo thứ tự gốc';
+  const answers = el('shuffle-answers').checked ? ' · Đáp án xáo trộn' : '';
+  el('setup-summary').textContent = valid
+    ? `${size} câu hỏi · ${order}${answers} · Điểm tối đa 10`
+    : `Vui lòng chọn số nguyên từ 1 đến ${QS.length}.`;
+}
+
+function selectOption(originalIndex) {
+  if (!state || state.graded || !Number.isInteger(originalIndex) || originalIndex < 0 || originalIndex > 3) return;
+  state.answers[state.current] = originalIndex;
+  persist();
+  render();
+  const selected = el('options').children[state.optionOrders[state.current].indexOf(originalIndex)];
+  selected.focus({preventScroll:true});
+}
+
+function jump(index) {
+  if (!state) return;
+  state.current = Math.max(0, Math.min(total() - 1, index));
+  persist();
+  render();
+  el('question').focus({preventScroll:true});
+  el('question').scrollIntoView({behavior:motion(), block:'start'});
+}
+
+function showQ() {
+  const index = state.current;
+  const question = QS[state.questionOrder[index]];
+  const order = state.optionOrders[index];
+  el('qmeta').textContent = `Câu ${index + 1} / ${total()}`;
+  el('topic').textContent = sectionFor(question);
+  el('question').textContent = question.q;
+  const options = el('options');
+  options.replaceChildren();
+  order.forEach((originalIndex, displayIndex) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'option';
+    const selected = state.answers[index] === originalIndex;
+    button.classList.toggle('selected', selected);
+    button.setAttribute('aria-pressed', String(selected));
+    if (state.graded) {
+      button.disabled = true;
+      button.classList.toggle('good', question.answer === originalIndex);
+      button.classList.toggle('bad', selected && originalIndex !== question.answer);
+    }
+    const bubble = document.createElement('span');
+    bubble.className = 'bubble';
+    bubble.textContent = alph[displayIndex];
+    const text = document.createElement('span');
+    text.textContent = question.options[originalIndex];
+    button.append(bubble, text);
+    button.addEventListener('click', () => selectOption(originalIndex));
+    options.append(button);
+  });
+  el('prev').disabled = index === 0;
+  el('next').disabled = index === total() - 1;
+  el('next').textContent = index === total() - 1 ? 'Đã tới câu cuối' : 'Câu tiếp theo →';
+  el('feedback').classList.toggle('hide', !state.graded);
+  if (state.graded) {
+    const answerLabel = alph[order.indexOf(question.answer)];
+    const selectedLabel = state.answers[index] === null ? 'chưa trả lời' : alph[order.indexOf(state.answers[index])];
+    const verdict = state.answers[index] === question.answer ? '✓ Đúng.' : '✗ Chưa đúng.';
+    const note = question.note.replace(/(lựa chọn|đáp án|phương án) ([A-D])\b/gi,
+      (match, label, letter) => `${label} ${alph[order.indexOf(alph.indexOf(letter))]}`);
+    el('feedback').textContent = `${verdict} Bạn chọn: ${selectedLabel}. Đáp án đúng: ${answerLabel}. ${note || 'Đối chiếu theo đáp án của bộ đề.'}`;
+  }
+}
+
+function keepCurrentQuestionVisible() {
+  if (!state) return;
+  const grid = el('qgrid');
+  const current = grid.querySelector('.current');
+  if (!current || !grid.getClientRects().length) return;
+  const viewport = grid.getBoundingClientRect();
+  const button = current.getBoundingClientRect();
+  const top = viewport.top + grid.clientTop + 3;
+  const bottom = viewport.top + grid.clientTop + grid.clientHeight - 3;
+  if (button.top < top) grid.scrollTop += button.top - top;
+  else if (button.bottom > bottom) grid.scrollTop += button.bottom - bottom;
+}
+
+function showGrid() {
+  const grid = el('qgrid');
+  const previousScroll = grid.scrollTop;
+  grid.replaceChildren();
+  sessionQuestions().forEach((question, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'qno';
+    button.textContent = index + 1;
+    button.classList.toggle('answered', state.answers[index] !== null);
+    button.classList.toggle('current', index === state.current);
+    if (index === state.current) button.setAttribute('aria-current', 'step');
+    let status = state.answers[index] === null ? 'chưa trả lời' : 'đã trả lời';
+    if (state.graded) {
+      const correct = state.answers[index] === question.answer;
+      button.classList.add(correct ? 'correct' : 'wrong');
+      status = correct ? 'đúng' : (state.answers[index] === null ? 'chưa trả lời' : 'sai');
+    }
+    button.title = `Câu ${index + 1}: ${status}`;
+    button.setAttribute('aria-label', button.title);
+    button.addEventListener('click', () => jump(index));
+    grid.append(button);
+  });
+  grid.scrollTop = previousScroll;
+  keepCurrentQuestionVisible();
+}
+
+function showScore() {
+  const score = el('score');
+  score.replaceChildren();
+  score.classList.toggle('hide', !state.graded);
+  score.classList.remove('perfect');
+  if (!state.graded) return;
+  const correct = correctCount();
+  const perfect = correct === total();
+  score.classList.toggle('perfect', perfect);
+  // Only fixed markup goes through innerHTML; student-supplied fields use textContent.
+  score.innerHTML = '<p class="result-heading">KẾT QUẢ LÀM BÀI</p><div class="score-number"><strong id="result-points"></strong><span>/ 10 điểm</span></div><p class="result-student" id="result-student"></p><p id="result-detail"></p><p class="small">Các đáp án màu xanh là đáp án đúng. Màu đỏ là lựa chọn sai.</p>';
+  el('result-points').textContent = formatScore(correct * 10 / total());
+  el('result-student').textContent = `Họ tên: ${state.student.name} · MSSV: ${state.student.id}`;
+  el('result-detail').textContent = `Đúng ${correct}/${total()} câu · Sai ${count() - correct} câu · Chưa trả lời ${total() - count()} câu.`;
+  if (perfect) {
+    const message = document.createElement('div');
+    message.className = 'congratulations';
+    const heading = document.createElement('h3');
+    heading.textContent = '🎉 Chúc mừng bạn!';
+    const detail = document.createElement('p');
+    detail.textContent = `${state.student.name} đã trả lời đúng ${correct}/${total()} câu và đạt 10/10 điểm. Xuất sắc!`;
+    message.append(heading, detail);
+    score.append(message);
+  }
+}
+
+function updateStudentInfo() {
+  el('student-display-name').textContent = state ? state.student.name : (el('student-name').value.trim() || 'Chưa nhập');
+  el('student-display-id').textContent = state ? state.student.id : (el('student-id').value.trim() || 'Chưa nhập');
+}
+
+function render() {
+  const active = state !== null;
+  document.body.classList.toggle('quiz-active', active);
+  el('setup').classList.toggle('hide', active);
+  el('quiz').classList.toggle('hide', !active);
+  updateStudentInfo();
+  if (!active) {
+    el('quiz-size').textContent = `Ngân hàng ${QS.length} câu • 4 đáp án/câu`;
+    el('quiz-order').textContent = 'Tùy chỉnh bài luyện tập của bạn';
+    el('score').replaceChildren();
+    el('print-bank').replaceChildren();
+    return;
+  }
+  el('quiz-size').textContent = `${total()} câu • 4 đáp án/câu`;
+  el('quiz-order').textContent = (state.settings.shuffleQuestions ? 'Câu hỏi ngẫu nhiên' : 'Câu hỏi theo thứ tự gốc') +
+    (state.settings.shuffleAnswers ? ' • Đáp án xáo trộn' : '');
+  el('answered').textContent = count();
+  el('total').textContent = total();
+  const percent = Math.round(count() * 100 / total());
+  el('progress').style.width = `${100 * count() / total()}%`;
+  el('percent').textContent = `${percent}%`;
+  el('progress-bar').setAttribute('aria-valuenow', String(percent));
+  el('submit').classList.toggle('hide', state.graded);
+  el('wrong').classList.toggle('hide', !state.graded);
+  el('wrong').disabled = state.graded && correctCount() === total();
+  showQ();
+  showGrid();
+  showScore();
+}
+
+function returnToSetup(changeStudent) {
+  if (!state) return;
+  if (count() > 0 && !confirm('Trở về màn hình bắt đầu? Bài làm và kết quả hiện tại sẽ được xóa.')) return;
+  el('student-name').value = changeStudent ? '' : state.student.name;
+  el('student-id').value = changeStudent ? '' : state.student.id;
+  el('question-count').value = state.settings.count;
+  el('shuffle-questions').checked = state.settings.shuffleQuestions;
+  el('shuffle-answers').checked = state.settings.shuffleAnswers;
+  ['student-name', 'student-id'].forEach(id => {
+    el(id).setCustomValidity('');
+    el(id).removeAttribute('aria-invalid');
+  });
+  el('setup-error').classList.add('hide');
+  state = null;
+  persist();
+  render();
+  updateSetupSummary();
+  el(changeStudent ? 'student-name' : 'question-count').focus({preventScroll:true});
+  window.scrollTo({top:0, behavior:motion()});
+}
+
+el('setup-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const name = el('student-name').value.trim();
+  const id = el('student-id').value.trim();
+  const size = Number(el('question-count').value);
+  const invalidId = !name ? 'student-name' : (!id ? 'student-id' : null);
+  if (invalidId) {
+    const message = invalidId === 'student-name' ? 'Vui lòng nhập họ và tên sinh viên.' : 'Vui lòng nhập mã số sinh viên.';
+    el(invalidId).setCustomValidity(message);
+    el(invalidId).setAttribute('aria-invalid', 'true');
+    el('setup-error').textContent = message;
+    el('setup-error').classList.remove('hide');
+    el(invalidId).reportValidity();
+    return;
+  }
+  if (!Number.isInteger(size) || size < 1 || size > QS.length) {
+    el('question-count').reportValidity();
+    return;
+  }
+  const settings = {count:size, shuffleQuestions:el('shuffle-questions').checked, shuffleAnswers:el('shuffle-answers').checked};
+  const bankOrder = QS.map((question, index) => index);
+  const questionOrder = (settings.shuffleQuestions ? shuffle(bankOrder) : bankOrder).slice(0, size);
+  state = {
+    student:{name, id}, settings, questionOrder,
+    optionOrders:questionOrder.map(() => settings.shuffleAnswers ? shuffle([0,1,2,3]) : [0,1,2,3]),
+    answers:Array(size).fill(null), current:0, graded:false
+  };
+  persist();
+  render();
+  el('question').focus({preventScroll:true});
+  window.scrollTo({top:0, behavior:motion()});
+});
+
+['student-name', 'student-id'].forEach(id => el(id).addEventListener('input', () => {
+  updateStudentInfo();
+  el(id).setCustomValidity('');
+  el(id).removeAttribute('aria-invalid');
+  el('setup-error').classList.add('hide');
+}));
+['question-count', 'shuffle-questions', 'shuffle-answers'].forEach(id => el(id).addEventListener('input', updateSetupSummary));
+document.querySelectorAll('[data-count]').forEach(button => button.addEventListener('click', () => {
+  el('question-count').value = button.dataset.count;
+  updateSetupSummary();
+}));
+el('prev').addEventListener('click', () => jump(state.current - 1));
+el('next').addEventListener('click', () => jump(state.current + 1));
+el('submit').addEventListener('click', () => {
+  if (!state || state.graded) return;
+  const missing = total() - count();
+  const message = missing > 0
+    ? `Bạn còn ${missing} câu chưa trả lời. Vẫn nộp bài và chấm điểm?`
+    : 'Nộp bài và hiển thị kết quả cùng đáp án đúng?';
+  if (!confirm(message)) return;
+  state.graded = true;
+  persist();
+  render();
+  el('score').focus({preventScroll:true});
+  el('score').scrollIntoView({behavior:motion(), block:'start'});
+});
+el('retry').addEventListener('click', () => returnToSetup(false));
+el('wrong').addEventListener('click', () => {
+  if (!state || !state.graded) return;
+  // Cycle through incorrect and unanswered questions, starting after the current question.
+  for (let offset = 1; offset <= total(); offset++) {
+    const index = (state.current + offset) % total();
+    if (state.answers[index] !== QS[state.questionOrder[index]].answer) {
+      jump(index);
+      return;
+    }
+  }
+});
+
+function buildPrintBank() {
+  const bank = el('print-bank');
+  bank.replaceChildren();
+  if (!state) return;
+  const heading = document.createElement('div');
+  heading.className = 'print-heading';
+  const identity = document.createElement('p');
+  identity.textContent = `Họ tên: ${state.student.name} · MSSV: ${state.student.id}`;
+  const summary = document.createElement('p');
+  summary.textContent = `${total()} câu hỏi · ${state.settings.shuffleQuestions ? 'Câu hỏi ngẫu nhiên' : 'Câu hỏi theo thứ tự gốc'}${state.settings.shuffleAnswers ? ' · Đáp án xáo trộn' : ''}`;
+  heading.append(identity, summary);
+  if (state.graded) {
+    const result = document.createElement('p');
+    result.textContent = `Kết quả: ${correctCount()}/${total()} câu đúng · ${formatScore(correctCount() * 10 / total())}/10 điểm.`;
+    heading.append(result);
+  }
+  bank.append(heading);
+  sessionQuestions().forEach((question, index) => {
+    const block = document.createElement('div');
+    block.className = 'question-print';
+    const title = document.createElement('h3');
+    title.textContent = `Câu ${index + 1}. ${question.q}`;
+    block.append(title);
+    state.optionOrders[index].forEach((originalIndex, displayIndex) => {
+      const option = document.createElement('p');
+      option.textContent = `${alph[displayIndex]}. ${question.options[originalIndex]}`;
+      block.append(option);
+    });
+    bank.append(block);
+  });
+}
+window.addEventListener('beforeprint', buildPrintBank);
+el('print').addEventListener('click', () => { buildPrintBank(); window.print(); });
+document.addEventListener('keydown', event => {
+  if (!state || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+  const focused = document.activeElement;
+  if (focused && (['INPUT','TEXTAREA','SELECT'].includes(focused.tagName) || focused.isContentEditable)) return;
+  if (event.key >= '1' && event.key <= '4' && !state.graded) {
+    event.preventDefault();
+    selectOption(state.optionOrders[state.current][Number(event.key) - 1]);
+  }
+  if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+    event.preventDefault();
+    jump(state.current + (event.key === 'ArrowRight' ? 1 : -1));
+  }
+});
+if (typeof ResizeObserver !== 'undefined') {
+  const gridResizeObserver = new ResizeObserver(keepCurrentQuestionVisible);
+  gridResizeObserver.observe(el('qgrid'));
+}
+updateSetupSummary();
+render();
+</script></body></html>
